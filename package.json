@@ -1,0 +1,14 @@
+{
+  "name": "tqa",
+  "version": "1.0.0",
+  "description": "App which takes in tutor session transcript and creates 4 detailed summaries for the tutor, student, parent and agency. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.3.1"
+  }
+}
