@@ -1,14 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="/script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.5.1/axios.min.js"
+    integrity="sha512-emSwuKiMyYedRwflbZB2ghzX8Cw8fmNVgZ6yQNNXXagFzFOaQmbvQ1vmDkddHjm5AITcBIZfC7k4ShQSjgPAmQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="/script.js"></script>
+  <style>
+    .loader {
+      width: 48px;
+      height: 48px;
+      border: 5px solid #FFF;
+      border-bottom-color: #FF3D00;
+      border-radius: 50%;
+      display: inline-block;
+      box-sizing: border-box;
+      animation: rotation 1s linear infinite;
+    }
+
+    @keyframes rotation {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>TQA APP</h1>
-    <textarea name="transcript" id="transcript" cols="30" rows="10"></textarea>
-    <button>CLICK THIS</button>
+  <h1>TQA APP</h1>
+  <textarea name="transcript" id="transcript" cols="30" rows="10"></textarea>
+  <button onclick="submitTranscript()">CLICK THIS</button>
+  <span style="display:none" id="spinner" class="loader"></span>
+  <div id="result" style="display: none">
+    <h1>Summaries</h1>
+
+    <h3>Parent</h3>
+    <div id="summary-parent"></div>
+
+    <h3>Student</h3>
+    <div id="summary-student"></div>
+
+    <h3>Agency</h3>
+    <div id="summary-agency"></div>
+
+    <h3>Tutor</h3>
+    <div id="summary-tutor"></div>
+  </div>
 </body>
+
 </html>
