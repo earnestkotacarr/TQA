@@ -1,36 +1,59 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import WelcomeBanner from './WelcomeBanner.jsx'
+import axios from 'axios'
+import { InfinitySpin } from 'react-loader-spinner'
 
 function App() {
   const [count, setCount] = useState(0)
+  const [userName, setUserName] = useState("Stranger")
+  const [transcript, setTranscript] = useState({ loading: true })
+
+  async function getTranscript() {
+    let response = await axios.get(`https://jsonplaceholder.typicode.com/todos/1`, {
+      withCredentials: false,
+    })
+    console.log(response.data)
+    setTranscript({ loading: false, data: response.data.title })
+  }
+
+
+  useEffect(() => {
+    getTranscript()
+  }, [])
+
+  useEffect( (loading) => {
+    if(!loading) {
+      var mp3_url = 'https://media.geeksforgeeks.org/wp-content/uploads/20190531135120/beep.mp3';
+
+      (new Audio(mp3_url)).play()
+    }
+  }, [transcript.loading])
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
+      <WelcomeBanner userName={userName} />
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-        N Wordood you have ahere is a jsx file  in order otamke stuf 
+        {transcript.loading ? (
+          <InfinitySpin 
+          width='200'
+          color="#4fa94d"
+        />
+        ) : (
+          <>
+            <h1>Transcript</h1>
+            <p>{transcript.data}</p>
+          </>
+        )}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
+}
+
+function doSomething() {
+  console.log("do something")
 }
 
 export default App
