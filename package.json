@@ -4,7 +4,8 @@
   "description": "App which takes in tutor session transcript and creates 4 detailed summaries for the tutor, student, parent and agency. ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +13,11 @@
     "@fastify/static": "^6.10.2",
     "dotenv": "^16.3.1",
     "fastify": "^4.21.0",
+    "json-server": "^0.17.4",
+    "lowdb": "^6.1.0",
     "openai": "^4.11.1",
-    "postmark": "^3.0.19"
-  }
+    "postmark": "^3.0.19",
+    "uuid": "^9.0.1"
+  },
+  "type":"module"
 }

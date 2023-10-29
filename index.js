@@ -1,29 +1,42 @@
-require('dotenv').config()
-const OpenAI = require('openai')
-const postmark = require("postmark");
+import 'dotenv/config'
+import path from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+import OpenAI from 'openai'
+import postmark from "postmark";
+//import { Low } from 'lowdb'
+import { JSONPreset } from 'lowdb/node'
+import {v4 as uuid} from 'uuid';
 
+const defaultData = {transcripts: {}}
+const db = await JSONPreset(pathToFileURL('./db.json'), defaultData)
+// await db.read()
 
-
-const path = require('path')
 const openai = new OpenAI({
   apiKey: process.env.OPENAIKEY, // defaults to process.env["OPENAI_API_KEY"]
 });
-const fastify = require(`fastify`)({
+import Fastify from 'fastify'
+const fastify = Fastify({
   logger: true
 })
 
 var client = new postmark.ServerClient(process.env.POSTMARKAPIKEY);
 
-fastify.register(require('@fastify/static'), {
+import fastifyStatic from '@fastify/static'
+fastify.register(fastifyStatic, {
   root: path.join(__dirname, 'public'),
 })
 
-fastify.post(`/api/`, async function (request, reply) {
-  console.log(request)
+fastify.post('/api/', async function (request, reply) {
+  // console.log(request)
   let transcript = request.body.transcript
   if (!transcript) {
     throw new Error('there is no transcript')
   }
+  let transcriptid = uuid()
+  db.data.transcripts[transcriptid] = {transcript :transcript}
+  await db.write()   
   const chatCompletion = await openai.chat.completions.create({
     messages: [
       {
@@ -58,7 +71,7 @@ fastify.post(`/api/`, async function (request, reply) {
   if (chatCompletion.choices.length == 0) {
     throw new Error('No choices')
   }
-  console.log(chatCompletion.choices)
+  // console.log(chatCompletion.choices)
   let firstChoice = chatCompletion.choices[0]
   var firstMessage = firstChoice.message.content
   const parsedMessage = JSON.parse(firstMessage) // use parentheses for methods and inputs of fuctions, use curly to define blocks of code- bodies of code 
